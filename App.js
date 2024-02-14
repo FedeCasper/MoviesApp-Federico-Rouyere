@@ -1,20 +1,38 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import Home from './src/screens/Home'
+import MoviesByCategory from './src/screens/MoviesByCategory'
+import { useFonts } from 'expo-font'
+import { fontsCollection } from './src/utils/globals/fonts'
 
-export default function App() {
+
+const App = () => {
+
+  const [ categotySelected, setCategorySelected ] = useState("")
+
+  const setCategorySelectedState = (category) => {
+    setCategorySelected(category)
+  }
+
+  useEffect(() => {
+    console.log(categotySelected)
+  }, [categotySelected])
+
+  const [ fontsLoaded ] = useFonts( fontsCollection )
+  if(!fontsLoaded) return null
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+      {
+        categotySelected ?
+          <MoviesByCategory categorySelected={categotySelected} />
+          :
+          <Home setCategorySelectedState={setCategorySelectedState} />
+      }
     </View>
-  );
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
+
+const styles = StyleSheet.create({})
